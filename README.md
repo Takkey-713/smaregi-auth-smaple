@@ -22,3 +22,6 @@ cp env.example .env.local
 ```bash
 yarn run dev
 ```
+
+
+CSで動かしてみたいという方がいたら滝口までいってくれれば、設定します。
