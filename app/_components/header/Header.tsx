@@ -2,7 +2,6 @@
 import { FC } from 'react'
 import { Box } from '@chakra-ui/react'
 import { Appbar } from '@/_components/header/uiparts/appbar/Appbar'
-import { Navigation } from '@/_components/header/uiparts/navigation/Navigation'
 
 const Header: FC = () => {
   return (
@@ -10,10 +9,6 @@ const Header: FC = () => {
       <Box px={4} bgColor='gray.100'>
         <Appbar />
       </Box>
-
-      {/* <Box px={4} bgColor='gray.100'>
-        <Navigation />
-      </Box> */}
     </Box>
   )
 }

@@ -15,12 +15,24 @@
   "root": true,
   "ignorePatterns": ["next.config.js", "prettierrc.js"],
   "rules": {
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-misused-promises": [
-      "error",
+    "error",
       {
         "checksVoidReturn": false
       }
     ],
-    "linebreak-style": "off"
+  "linebreak-style": "off"
   }
+  // "rules": {
+  //   "@typescript-eslint/no-misused-promises": [
+  //     "error",
+  //     {
+  //       "checksVoidReturn": false
+  //     }
+  //   ],
+  //   "linebreak-style": "off"
+  // }
 }

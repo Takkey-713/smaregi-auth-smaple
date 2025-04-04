@@ -3,8 +3,8 @@
 import React, { useState } from 'react'
 import { Box, Avatar } from '@chakra-ui/react'
 import { signIn, useSession } from 'next-auth/react'
-// import { signIn, useSession } from 'next-auth/client'
-import { UserInfoModal } from './UserInfoModa'
+
+import { UserInfoModal } from './UserInfoModal'
 
 export const UserInfo: React.FC = () => {
   const { data: session, status } = useSession()
@@ -16,8 +16,7 @@ export const UserInfo: React.FC = () => {
   if (status === 'loading') {
     return null
   }
-
-  if (session && session.user) {
+  if (session) {
     return (
       <>
         <Box cursor={'pointer'} onClick={handleAvatarClick}>
@@ -26,7 +25,7 @@ export const UserInfo: React.FC = () => {
             name='Logined User'
             height={'32px'}
             width={'32px'}
-            src={session.user.name || ''}
+            // src={session.user.name || ''}
           />
         </Box>
 

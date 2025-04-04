@@ -31,15 +31,18 @@ export const UserInfoModal: React.FC<Props> = ({ isOpen, onClose, user }) => {
         <ModalContent width={'85%'}>
           <ModalHeader>
             <Box as={'span'} fontSize='16px'>
+              &quot;工事中&quot;
+            </Box>
+            <Box as={'span'} fontSize='16px'>
               {user.name}
             </Box>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Flex>
-              <Box as={'span'} fontSize='16px'>
+              {/* <Box as={'span'} fontSize='16px'>
                 {user.email}
-              </Box>
+              </Box> */}
             </Flex>
 
             {/* ここに編集画面への導線とか作る感じで */}

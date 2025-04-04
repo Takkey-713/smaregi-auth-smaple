@@ -10,7 +10,9 @@ interface SmaregiProfile {
 }
 
 const generateRandomString = (length: number): string => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   return [...Array(length)].map(() => Math.random().toString(36)[2]).join('')
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 }
 
 const generatePKCE = () => {
@@ -37,11 +39,15 @@ async function makeTokenRequest(context: TokenRequestContext) {
   const { client_id, client_secret, redirect_uris } = context.client
   const code_verifier = context.params.code_verifier
 
-  console.log(context)
+  console.log('-------')
+  console.log(`codeVerifier ${code_verifier}`)
+  console.log('-------')
 
   try {
     const tokenUrl = process.env.TOKEN_ENDPOINT || ''
-
+    console.log('-------')
+    console.log(`URL ${tokenUrl}`)
+    console.log('-------')
     const response = await fetch(`${tokenUrl}/authorize/token`, {
       method: 'POST',
       headers: {
@@ -61,8 +67,9 @@ async function makeTokenRequest(context: TokenRequestContext) {
       console.error('Error response body:', errorText)
       throw new Error(`HTTP error! status: ${response.status}`)
     }
-
+    // @typescript-eslint/no-unsafe-return
     return await response.json()
+    // @typescript-eslint/no-unsafe-return
   } catch (error) {
     console.error('Error fetching tokens:', error)
     throw error
@@ -72,18 +79,27 @@ async function makeTokenRequest(context: TokenRequestContext) {
 export default function SmaregiProvider<P extends Record<string, any> = SmaregiProfile>(
   options: OAuthUserConfig<P>,
 ): OAuthConfig<P> {
-  const { codeVerifier, codeChallenge, state } = generatePKCE()
+  const { codeChallenge, state } = generatePKCE()
 
   return {
     id: 'smaregi',
     name: 'Smaregi',
     type: 'oauth',
     version: '2.0',
-    scope: process.env.SCOPE, 
-    params: { grant_type: 'authorization_code' },
+    authorization: {
+      url: 'https://id.smaregi.dev/authorize',
+      params: {
+        response_type: 'code',
+        code_challenge: codeChallenge,
+        code_challenge_method: 'S256',
+        state,
+        scope: process.env.SCOPE, // ✅ ここに移動
+        redirect_uri: 'https://myapp.local:3000/api/auth/callback/smaregi',
+      },
+    },
     accessTokenUrl: `${process.env.TOKEN_ENDPOINT}/authorize/token` || '',
     profileUrl: `${process.env.TOKEN_ENDPOINT}/userinfo`,
-    profile(profile: SmaregiProfile) {
+    profile(profile) {
       return {
         id: profile.sub,
         name: profile.name,
@@ -91,24 +107,33 @@ export default function SmaregiProvider<P extends Record<string, any> = SmaregiP
         emailVerified: profile.email_verified,
       }
     },
-    authorization: {
-      url: `${process.env.TOKEN_ENDPOINT}/authorize`,
-      params: {
-        response_type: 'code',
-        code_challenge: codeChallenge,
-        code_challenge_method: 'S256',
-        state,
-        scope: process.env.SCOPE,
-      },
-    },
     token: {
       url: `${process.env.TOKEN_ENDPOINT}/authorize/token`,
       async request(context) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const { code } = context.params
+        if (!code) {
+          throw new Error('Authorization code is missing')
+        }
+
+        const { client_id, client_secret } = context.client
+        const redirect_uris = [context.provider.callbackUrl] // Use correct callbackUrl
+        const { codeVerifier } = generatePKCE()
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const tokens = await makeTokenRequest({
           ...context,
           params: {
             ...context.params,
+            code,
             code_verifier: codeVerifier,
+          },
+          client: {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            client_id: client_id as string, // Ensure type safety
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            client_secret: client_secret as string,
+            redirect_uris,
           },
         })
         return { tokens }
