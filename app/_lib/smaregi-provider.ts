@@ -87,14 +87,14 @@ export default function SmaregiProvider<P extends Record<string, any> = SmaregiP
     type: 'oauth',
     version: '2.0',
     authorization: {
-      url: 'https://id.smaregi.dev/authorize',
+      url: `${process.env.TOKEN_ENDPOIN}/authorize`,
       params: {
         response_type: 'code',
         code_challenge: codeChallenge,
         code_challenge_method: 'S256',
         state,
         scope: process.env.SCOPE, // ✅ ここに移動
-        redirect_uri: 'https://myapp.local:3000/api/auth/callback/smaregi',
+        redirect_uri: process.env.SMAREGI_REDIRECT_URI,
       },
     },
     accessTokenUrl: `${process.env.TOKEN_ENDPOINT}/authorize/token` || '',
