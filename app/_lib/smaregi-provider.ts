@@ -80,14 +80,15 @@ export default function SmaregiProvider<P extends Record<string, any> = SmaregiP
   options: OAuthUserConfig<P>,
 ): OAuthConfig<P> {
   const { codeChallenge, state } = generatePKCE()
-
+  const tokenUrl = process.env.TOKEN_ENDPOINT
   return {
     id: 'smaregi',
     name: 'Smaregi',
     type: 'oauth',
     version: '2.0',
     authorization: {
-      url: `${process.env.TOKEN_ENDPOIN}/authorize`,
+      // url: 'https://id.smaregi.dev/authorize',
+      url: tokenUrl,
       params: {
         response_type: 'code',
         code_challenge: codeChallenge,
