@@ -79,7 +79,6 @@ async function makeTokenRequest(context: TokenRequestContext) {
 export default function SmaregiProvider<P extends Record<string, any> = SmaregiProfile>(
   options: OAuthUserConfig<P>,
 ): OAuthConfig<P> {
-  // const { codeChallenge, state } = generatePKCE()
   const { codeVerifier, codeChallenge, state } = generatePKCE()
   return {
     id: 'smaregi',

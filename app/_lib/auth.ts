@@ -16,7 +16,7 @@ interface UserInfo {
 }
 
 async function getUserInfo(userAccessToken: string): Promise<UserInfo> {
-  const response = await fetch('https://id.smaregi.dev/userinfo', {
+  const response = await fetch(`${process.env.TOKEN_ENDPOINT}/userinfo`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${userAccessToken}`,
