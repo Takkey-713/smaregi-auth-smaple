@@ -16,7 +16,7 @@ const generateRandomString = (length: number): string => {
 }
 
 const generatePKCE = () => {
-  const codeVerifier = generateRandomString(128)
+  const codeVerifier = generateRandomString(43)
   const codeChallenge = createHash('sha256').update(codeVerifier).digest('base64url')
   const state = generateRandomString(16)
   return { codeVerifier, codeChallenge, state }
@@ -79,23 +79,21 @@ async function makeTokenRequest(context: TokenRequestContext) {
 export default function SmaregiProvider<P extends Record<string, any> = SmaregiProfile>(
   options: OAuthUserConfig<P>,
 ): OAuthConfig<P> {
-  const { codeChallenge, state } = generatePKCE()
-  const tokenUrl = process.env.TOKEN_ENDPOINT
+  // const { codeChallenge, state } = generatePKCE()
+  const { codeVerifier, codeChallenge, state } = generatePKCE()
   return {
     id: 'smaregi',
     name: 'Smaregi',
     type: 'oauth',
     version: '2.0',
     authorization: {
-      // url: 'https://id.smaregi.dev/authorize',
-      url: tokenUrl,
+      url: `${process.env.TOKEN_ENDPOINT}/authorize`,
       params: {
         response_type: 'code',
         code_challenge: codeChallenge,
         code_challenge_method: 'S256',
-        state,
-        scope: process.env.SCOPE, // ✅ ここに移動
-        redirect_uri: process.env.SMAREGI_REDIRECT_URI,
+        state: state,
+        scope: process.env.SCOPE,
       },
     },
     accessTokenUrl: `${process.env.TOKEN_ENDPOINT}/authorize/token` || '',
@@ -119,7 +117,6 @@ export default function SmaregiProvider<P extends Record<string, any> = SmaregiP
 
         const { client_id, client_secret } = context.client
         const redirect_uris = [context.provider.callbackUrl] // Use correct callbackUrl
-        const { codeVerifier } = generatePKCE()
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const tokens = await makeTokenRequest({

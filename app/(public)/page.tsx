@@ -35,10 +35,10 @@ export default function Home() {
           <Box>
             <Avatar
               name='testImage'
-              height={'500px'}
-              width={'500px'}
+              height={'300px'}
+              width={'300px'}
               src={
-                'https://pos-cache.smaregi.jp/resources/HFoCOx5X8tn9DpI4pc1wMq5rK1Vg39+YpGuci4pgeiIRifMH92tBkcM6B2adK7UzXCfSZl76KKFu0GPogrueqznDBdRnY3VUt2XoODJZ5r+Cml8w+vIu4FNz8LG+gNp+laHofBTxU/PA7+ZyQZqKKuThgvKbDG0R6rQs/Yca0yghctGCv/XIYZ8X7+w7fmdpckqVIskbrvv0UKEiwjee2A==.png'
+                'https://stickershop.line-scdn.net/stickershop/v1/product/1472301/LINEStorePC/main.png?v=1'
               }
             />
           </Box>
