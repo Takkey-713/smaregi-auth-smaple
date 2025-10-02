@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "next dev -H myapp.local -p 3000 --experimental-https",
     "build": "next build",
-    "start": "next start",
+    "start": "next start ",
     "lint": "next lint",
     "format": "prettier --write ."
   },

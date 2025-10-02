@@ -3,9 +3,9 @@ import { z } from 'zod'
 const zPointCondition = z.object({
   storeId: z.string(),
   pointUseDivision: z.string(),
-  spendRate: z.string(),
-  pointGivingUnitPrice: z.string(),
-  pointGivingUnit: z.string(),
+  spendRate: z.string().nullable(),
+  pointGivingUnitPrice: z.string().nullable(),
+  pointGivingUnit: z.string().nullable(),
   pointGivingDivision: z.string(),
   pointUseUnit: z.string(),
   pointSpendDivision: z.string(),
