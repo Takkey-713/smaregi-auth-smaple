@@ -16,12 +16,13 @@ const zPointCondition = z.object({
   mileageLimit: z.string().nullable(),
 })
 
-const zStore = z.object({
+export const zStore = z.object({
   storeId: z.string(),
   storeName: z.string(),
   pointCondition: zPointCondition,
 })
 
 export type Store = z.infer<typeof zStore>
+
 export const zStores = z.array(zStore)
 export type StoreProps = z.infer<typeof zStores>

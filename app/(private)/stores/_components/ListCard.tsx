@@ -11,7 +11,7 @@ import {
   CardBody,
   useBreakpointValue,
 } from '@chakra-ui/react'
-import Link from 'next/link' // ✅ 使用するならこのまま、使わないなら削除
+import Link from 'next/link' 
 
 interface Props {
   data: Store
